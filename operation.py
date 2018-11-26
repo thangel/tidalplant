@@ -1,7 +1,9 @@
 import math
 import numpy as np
 
-# modules.parameterisation contains functions for the turbine and sluice gate flow calculatio
+# modules.parameterisation contains functions for the turbine and sluice gate flow calculation
+from numpy.core.multiarray import ndarray
+
 from parameterisations import turbine_parametrisation, gate_sluicing, turbine_sluicing
 
 
@@ -201,6 +203,7 @@ def plant_operation(t, dt, h_i, h_o, status, control, params):
     :param h_o: downstream water level (m)
     :param status: current status parameters of lagoon/barrage
     :param control: control parameters imposed for the operation
+    :param params: hydraulic structure control parameters
     """
 
     status = plant_algorithm(h_i, h_o, t / 3600, status, control, params["turbine_specs"], params["sluice_specs"])
@@ -227,12 +230,13 @@ def operational_model(simulation, elev_time, area_elev, status, control, params,
     h_inner += (status["Q_t"] + status["Q_s"]) * simulation["Dt"] / (area_elev(h_inner) * (10 ** 6))
     status["E"], cycle = 0., -1
 
-    if export_output is not None: data = np.empty((int(simulation["t"] / simulation["Dt"]), 12), dtype=object)
+    if export_output:
+        data: ndarray = np.empty((int(simulation["t"] / simulation["Dt"]), 12), dtype=object)
 
     # Iterative process - finite difference
     for step in range(0, int(simulation["t"] / simulation["Dt"]), 1):
 
-        if export_output is not None:
+        if export_output:
             data[step] = plant_operation(step * simulation["Dt"] + simulation["start_t"], simulation["Dt"], h_inner,
                                          elev_time(step * simulation["Dt"] + simulation["start_t"]), status, control,
                                          params)
@@ -242,7 +246,7 @@ def operational_model(simulation, elev_time, area_elev, status, control, params,
 
         h_inner += (status["Q_t"] + status["Q_s"]) * simulation["Dt"] / (area_elev(h_inner) * (10 ** 6))
 
-    if export_output is not None:
+    if export_output:
         return status, data
     else:
         return status

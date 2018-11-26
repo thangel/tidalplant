@@ -29,7 +29,7 @@ def plant_specifications(turbine_number, sluice_number, operation='two-way', opt
                                          Two-way generation         ==> "two-way"
                                          Two-way-pumping generation ==> "two-way-pump"
 
-    ;:param options: turbine options  0 ==> realistic representation, 1 ==> idealised hill chart
+    :param options: turbine options  0 ==> realistic representation, 1 ==> idealised hill chart
 
     :return: control parameter array , turbine parameters
     """
