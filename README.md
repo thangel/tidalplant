@@ -1,5 +1,5 @@
 # tidalplant
-A short operational model for the simulation of tidal power plants.
+Operational model for the simulation of tidal power plants.
 
 The aim of this project is to include short examples for the simulation of tidal range power plants through a 0-D modelling technique. A finite difference approach is used to simulate the project in time.
 
